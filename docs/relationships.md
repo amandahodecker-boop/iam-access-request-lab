@@ -63,3 +63,9 @@ Access Request
   +---- Audit Log
   |
   +---- Audit Log
+
+## Identity-centered history
+
+Each user is represented only once in the system and can be associated with multiple access requests over time.
+
+Individual requests remain independent records, while the relationship with the User allows the system to reconstruct the access request history of a specific identity for governance and audit purposes.
