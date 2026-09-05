@@ -42,3 +42,24 @@ Initial fields for the MVP:
 | Decision | APPROVED or REJECTED |
 | Decision Comment | Optional explanation for the decision |
 | Decided At | Date and time the decision was made |
+## Audit Log
+
+The Audit Log records important events that occur during the lifecycle of an access request.
+
+It provides a chronological history of actions without replacing the detailed records stored in other entities such as Approval.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| Log ID | Unique identifier for the audit event |
+| Request ID | Access Request associated with the event |
+| Event Type | Type of event that occurred |
+| Performed By | User who performed the action |
+| Event Details | Additional context about the event |
+| Created At | Date and time the event occurred |
+### Audit rule
+
+Audit events must preserve the historical sequence of actions performed in the system.
+
+Existing audit records should not be silently overwritten when a new action occurs. New events should be added to the history instead.
