@@ -63,3 +63,38 @@ Initial fields for the MVP:
 Audit events must preserve the historical sequence of actions performed in the system.
 
 Existing audit records should not be silently overwritten when a new action occurs. New events should be added to the history instead.
+## User
+
+A User represents a fictional employee who participates in the access request process.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| User ID | Unique identifier for the user |
+| Name | User's full name |
+| Job Title | User's organizational job title |
+| Business Area | Department or business area where the user works |
+| Manager | User responsible for managerial approval |
+| IAM Workflow Roles | Roles the user can perform in the IAM workflow |
+| Active | Indicates whether the user is currently active |
+## User
+
+A User represents a fictional employee who participates in the access request process.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| User ID | Unique identifier for the user |
+| Name | User's full name |
+| Job Title | User's organizational job title |
+| Business Area | Department or business area where the user works |
+| Manager | User responsible for managerial approval |
+| IAM Workflow Roles | Roles the user can perform in the IAM workflow |
+| Active | Indicates whether the user is currently active |
+### User lifecycle rule
+
+Users should not be permanently deleted when they leave the organization.
+
+Inactive users must remain available for historical and audit purposes.
