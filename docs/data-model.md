@@ -37,8 +37,8 @@ Initial fields for the MVP:
 |---|---|
 | Approval ID | Unique identifier for the approval record |
 | Request ID | Access Request associated with this approval |
-| Approval Type | Type of approval, such as Manager or Application Owner |
-| Approver | User responsible for making the decision |
+| Approval Type | Responsibility under which the decision was made, such as Manager or Application Owner |
+| Approver | User who made the decision |
 | Decision | APPROVED or REJECTED |
 | Decision Comment | Optional explanation for the decision |
 | Decided At | Date and time the decision was made |
