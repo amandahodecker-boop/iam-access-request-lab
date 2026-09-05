@@ -27,3 +27,18 @@ Initial fields for the MVP:
 The Requested Role is mandatory when an access request is submitted.
 
 The requester must select an existing role associated with the selected corporate system. Role descriptions will help users understand which access profile best matches their business need.
+## Approval
+
+An Approval represents an individual decision made as part of an access request workflow.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| Approval ID | Unique identifier for the approval record |
+| Request ID | Access Request associated with this approval |
+| Approval Type | Type of approval, such as Manager or Application Owner |
+| Approver | User responsible for making the decision |
+| Decision | APPROVED or REJECTED |
+| Decision Comment | Optional explanation for the decision |
+| Decided At | Date and time the decision was made |
