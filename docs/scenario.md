@@ -30,3 +30,16 @@ Human Resources system used to manage employee-related information.
 ### ServiceFlow
 
 Service management system used to register and track internal requests.
+## Fictional users and IAM roles
+
+| Name | Job title | Business area | IAM workflow role |
+|---|---|---|---|
+| João Ribeiro | Operations Assistant | Operations | Requester |
+| Marina Lopes | Operations Manager | Operations | Requester / Approver |
+| Bruno Costa | Financial Analyst | Finance | Requester |
+| Laura Martins | Finance Manager | Finance | Requester / Approver |
+| Helena Duarte | HR Manager | Human Resources | Requester / Approver / PeopleHub Application Owner |
+| Rafael Nunes | Product Manager | Technology | NovaERP Application Owner |
+| Marcelo Azevedo | Service Management Coordinator | Technology | ServiceFlow Application Owner |
+| Camila Torres | Security Analyst | Information Security | Alternate Approver |
+| Diego Freitas | IAM Analyst | Information Security | IAM Analyst |
