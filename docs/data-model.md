@@ -98,3 +98,30 @@ Initial fields for the MVP:
 Users should not be permanently deleted when they leave the organization.
 
 Inactive users must remain available for historical and audit purposes.
+## System
+
+A System represents a fictional corporate application that can receive access requests.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| System ID | Unique identifier for the system |
+| Name | Name of the corporate system |
+| Description | Brief explanation of the system's purpose |
+| Application Owner | User responsible for system-level access approval |
+| Active | Indicates whether the system is currently available for access requests |
+## Role
+
+A Role represents a predefined access profile available within a corporate system.
+
+Initial fields for the MVP:
+
+| Field | Purpose |
+|---|---|
+| Role ID | Unique identifier for the role |
+| System ID | System where the role exists |
+| Name | Name of the access profile |
+| Description | Explanation of what the role allows |
+| Privilege Level | Indicates the relative privilege level of the role |
+| Active | Indicates whether the role can currently be requested |
