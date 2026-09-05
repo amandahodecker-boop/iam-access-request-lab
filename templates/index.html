@@ -4,57 +4,62 @@
     <meta charset="UTF-8">
     <title>Laboratório de Solicitação de Acesso IAM</title>
 </head>
+
 <body>
     <h1>Laboratório de Solicitação de Acesso IAM</h1>
+
     <h2>Nova solicitação de acesso</h2>
 
-<form>
-    <label for="requester">Solicitante:</label>
-    <input type="text" id="requester" name="requester">
+    <form method="POST" action="/">
 
-    <br><br>
+        <label for="requester">Solicitante:</label>
+        <input type="text" id="requester" name="requester">
 
-    <label for="system">Sistema:</label>
-    <select id="system" name="system">
-        <option value="">Selecione um sistema</option>
-        <option value="novaerp">NovaERP</option>
-        <option value="peoplehub">PeopleHub</option>
-        <option value="serviceflow">ServiceFlow</option>
-    </select>
+        <br><br>
 
-    <br><br>
+        <label for="system">Sistema:</label>
+        <select id="system" name="system">
+            <option value="">Selecione um sistema</option>
+            <option value="novaerp">NovaERP</option>
+            <option value="peoplehub">PeopleHub</option>
+            <option value="serviceflow">ServiceFlow</option>
+        </select>
 
-    <label for="role">Perfil solicitado:</label>
-    <select id="role" name="role">
-        <option value="">Selecione um perfil</option>
-        <option value="viewer">Viewer</option>
-        <option value="analyst">Analyst</option>
-        <option value="administrator">Administrator</option>
-    </select>
+        <br><br>
 
-    <br><br>
+        <label for="role">Perfil solicitado:</label>
+        <select id="role" name="role">
+            <option value="">Selecione um perfil</option>
+            <option value="viewer">Viewer</option>
+            <option value="analyst">Analyst</option>
+            <option value="administrator">Administrator</option>
+        </select>
 
-    <label for="functions">Funções necessárias:</label>
-    <textarea id="functions" name="functions"></textarea>
+        <br><br>
 
-    <br><br>
+        <label for="functions">Funções necessárias:</label>
+        <textarea id="functions" name="functions"></textarea>
 
-    <label for="scope">Escopo organizacional:</label>
-    <input type="text" id="scope" name="scope">
+        <br><br>
 
-    <br><br>
+        <label for="scope">Escopo organizacional:</label>
+        <input type="text" id="scope" name="scope">
 
-    <label for="justification">Justificativa de negócio:</label>
-    <textarea id="justification" name="justification"></textarea>
+        <br><br>
 
-    <br><br>
+        <label for="justification">Justificativa de negócio:</label>
+        <textarea id="justification" name="justification"></textarea>
 
-    <label for="reference_user">Usuário de referência (opcional):</label>
-    <input type="text" id="reference_user" name="reference_user">
+        <br><br>
 
-    <br><br>
+        <label for="reference_user">Usuário de referência (opcional):</label>
+        <input type="text" id="reference_user" name="reference_user">
 
-    <button type="submit">Enviar solicitação</button>
-</form>
+        <br><br>
+
+        <button type="submit">Enviar solicitação</button>
+
+    </form>
+
 </body>
 </html>
