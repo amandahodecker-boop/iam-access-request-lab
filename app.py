@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
@@ -34,7 +35,16 @@ def home():
             missing_fields.append("Justificativa de negócio")
 
         if missing_fields:
-            return "Campos obrigatórios não preenchidos: " + ", ".join(missing_fields), 400
+            error_message = (
+                "Preencha os campos obrigatórios: "
+                + ", ".join(missing_fields)
+            )
+
+            return render_template(
+                "index.html",
+                error_message=error_message,
+                form_data=request.form
+            ), 400
 
         return (
             f"Solicitante: {requester} | "
