@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 
+from database import create_access_request
+
 app = Flask(__name__)
 
 
@@ -46,14 +48,19 @@ def home():
                 form_data=request.form
             ), 400
 
+        request_id = create_access_request(
+            requester=requester,
+            system=system,
+            role=role,
+            functions=functions,
+            scope=scope,
+            justification=justification,
+            reference_user=reference_user
+        )
+
         return (
-            f"Solicitante: {requester} | "
-            f"Sistema: {system} | "
-            f"Perfil: {role} | "
-            f"Funções: {functions} | "
-            f"Escopo: {scope} | "
-            f"Justificativa: {justification} | "
-            f"Usuário de referência: {reference_user}"
+            f"Solicitação #{request_id} criada com sucesso. "
+            "Status: aguardando aprovação."
         )
 
     return render_template("index.html")
