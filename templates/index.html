@@ -10,19 +10,46 @@
 
     <h2>Nova solicitação de acesso</h2>
 
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
     <form method="POST" action="/">
 
         <label for="requester">Solicitante:</label>
-        <input type="text" id="requester" name="requester">
+        <input
+            type="text"
+            id="requester"
+            name="requester"
+            value="{{ form_data.get('requester', '') if form_data else '' }}"
+        >
 
         <br><br>
 
         <label for="system">Sistema:</label>
         <select id="system" name="system">
             <option value="">Selecione um sistema</option>
-            <option value="novaerp">NovaERP</option>
-            <option value="peoplehub">PeopleHub</option>
-            <option value="serviceflow">ServiceFlow</option>
+
+            <option
+                value="novaerp"
+                {% if form_data and form_data.get('system') == 'novaerp' %}selected{% endif %}
+            >
+                NovaERP
+            </option>
+
+            <option
+                value="peoplehub"
+                {% if form_data and form_data.get('system') == 'peoplehub' %}selected{% endif %}
+            >
+                PeopleHub
+            </option>
+
+            <option
+                value="serviceflow"
+                {% if form_data and form_data.get('system') == 'serviceflow' %}selected{% endif %}
+            >
+                ServiceFlow
+            </option>
         </select>
 
         <br><br>
@@ -30,30 +57,58 @@
         <label for="role">Perfil solicitado:</label>
         <select id="role" name="role">
             <option value="">Selecione um perfil</option>
-            <option value="viewer">Viewer</option>
-            <option value="analyst">Analyst</option>
-            <option value="administrator">Administrator</option>
+
+            <option
+                value="viewer"
+                {% if form_data and form_data.get('role') == 'viewer' %}selected{% endif %}
+            >
+                Viewer
+            </option>
+
+            <option
+                value="analyst"
+                {% if form_data and form_data.get('role') == 'analyst' %}selected{% endif %}
+            >
+                Analyst
+            </option>
+
+            <option
+                value="administrator"
+                {% if form_data and form_data.get('role') == 'administrator' %}selected{% endif %}
+            >
+                Administrator
+            </option>
         </select>
 
         <br><br>
 
         <label for="functions">Funções necessárias:</label>
-        <textarea id="functions" name="functions"></textarea>
+        <textarea id="functions" name="functions">{{ form_data.get('functions', '') if form_data else '' }}</textarea>
 
         <br><br>
 
         <label for="scope">Escopo organizacional:</label>
-        <input type="text" id="scope" name="scope">
+        <input
+            type="text"
+            id="scope"
+            name="scope"
+            value="{{ form_data.get('scope', '') if form_data else '' }}"
+        >
 
         <br><br>
 
         <label for="justification">Justificativa de negócio:</label>
-        <textarea id="justification" name="justification"></textarea>
+        <textarea id="justification" name="justification">{{ form_data.get('justification', '') if form_data else '' }}</textarea>
 
         <br><br>
 
         <label for="reference_user">Usuário de referência (opcional):</label>
-        <input type="text" id="reference_user" name="reference_user">
+        <input
+            type="text"
+            id="reference_user"
+            name="reference_user"
+            value="{{ form_data.get('reference_user', '') if form_data else '' }}"
+        >
 
         <br><br>
 
