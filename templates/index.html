@@ -10,9 +10,20 @@
 
     <h2>Nova solicitação de acesso</h2>
 
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
+
+       {% if error_message %}
+    <p id="error-message" style="display: none;">{{ error_message }}</p>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            const errorMessage = document.getElementById("error-message");
+
+            if (errorMessage) {
+                alert(errorMessage.textContent);
+            }
+        });
+    </script>
+{% endif %}
 
     <form method="POST" action="/">
 
