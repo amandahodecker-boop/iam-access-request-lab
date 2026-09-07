@@ -98,14 +98,36 @@
 
         <br><br>
 
-        <label for="scope">Escopo organizacional:</label>
-        <input
-            type="text"
-            id="scope"
-            name="scope"
-            value="{{ form_data.get('scope', '') if form_data else '' }}"
-        >
+          <label for="scope">Área</label>
+<select id="scope" name="scope">
+    <option value="">Selecione uma área</option>
 
+    <option value="operations"
+        {% if form_data and form_data.get('scope') == 'operations' %}selected{% endif %}>
+        Operações
+    </option>
+
+    <option value="finance"
+        {% if form_data and form_data.get('scope') == 'finance' %}selected{% endif %}>
+        Financeiro
+    </option>
+
+    <option value="hr"
+        {% if form_data and form_data.get('scope') == 'hr' %}selected{% endif %}>
+        Recursos Humanos
+    </option>
+
+    <option value="technology"
+        {% if form_data and form_data.get('scope') == 'technology' %}selected{% endif %}>
+        Tecnologia
+    </option>
+
+    <option value="information_security"
+        {% if form_data and form_data.get('scope') == 'information_security' %}selected{% endif %}>
+        Segurança da Informação
+    </option>
+</select>
+          
         <br><br>
 
         <label for="justification">Justificativa de negócio:</label>
