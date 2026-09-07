@@ -1,6 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 
-from database import create_access_request, list_access_requests
+from approval_rules import (
+    get_request_status_from_approvals,
+    get_required_approvers
+)
+
+from database import (
+    create_access_request,
+    create_approval,
+    decide_approval,
+    get_access_request,
+    list_access_requests,
+    list_request_approvals,
+    update_access_request_status
+)
 
 app = Flask(__name__)
 
@@ -48,6 +61,18 @@ def home():
                 form_data=request.form
             ), 400
 
+        manager, application_owner = get_required_approvers(
+            scope,
+            system
+        )
+
+        if not manager or not application_owner:
+            return render_template(
+                "index.html",
+                error_message="Área ou sistema inválido para o fluxo de aprovação.",
+                form_data=request.form
+            ), 400
+
         request_id = create_access_request(
             requester=requester,
             system=system,
@@ -56,6 +81,18 @@ def home():
             scope=scope,
             justification=justification,
             reference_user=reference_user
+        )
+
+        create_approval(
+            request_id=request_id,
+            approver_type="manager",
+            approver_name=manager
+        )
+
+        create_approval(
+            request_id=request_id,
+            approver_type="application_owner",
+            approver_name=application_owner
         )
 
         return (
@@ -73,4 +110,57 @@ def requests_list():
     return render_template(
         "requests.html",
         access_requests=access_requests
+    )
+
+
+@app.route("/requests/<int:request_id>")
+def request_details(request_id):
+    access_request = get_access_request(request_id)
+
+    if access_request is None:
+        return "Solicitação não encontrada.", 404
+
+    approvals = list_request_approvals(request_id)
+
+    return render_template(
+        "request_details.html",
+        access_request=access_request,
+        approvals=approvals
+    )
+
+
+@app.route(
+    "/approvals/<int:approval_id>/<decision>",
+    methods=["POST"]
+)
+def approval_decision(approval_id, decision):
+    try:
+        request_id = decide_approval(
+            approval_id,
+            decision
+        )
+    except ValueError:
+        return "Decisão de aprovação inválida.", 400
+
+    if request_id is None:
+        return "Aprovação não encontrada.", 404
+
+    approvals = list_request_approvals(request_id)
+
+    approval_statuses = [
+        approval["status"]
+        for approval in approvals
+    ]
+
+    new_status = get_request_status_from_approvals(
+        approval_statuses
+    )
+
+    update_access_request_status(
+        request_id,
+        new_status
+    )
+
+    return redirect(
+        f"/requests/{request_id}"
     )

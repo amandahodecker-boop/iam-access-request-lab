@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Solicitação</title>
+</head>
+
+<body>
+
+    {% set area_labels = {
+        "operations": "Operações",
+        "finance": "Financeiro",
+        "hr": "Recursos Humanos",
+        "technology": "Tecnologia",
+        "information_security": "Segurança da Informação"
+    } %}
+
+    {% set system_labels = {
+        "novaerp": "NovaERP",
+        "peoplehub": "PeopleHub",
+        "serviceflow": "ServiceFlow"
+    } %}
+
+    {% set status_labels = {
+        "pending_approval": "Aguardando aprovação",
+        "approved": "Aprovada",
+        "rejected": "Rejeitada",
+        "provisioned": "Provisionada"
+    } %}
+
+    {% set approval_type_labels = {
+        "manager": "Gestor da área",
+        "application_owner": "Application Owner"
+    } %}
+
+    {% set approval_status_labels = {
+        "pending": "Aguardando",
+        "approved": "Aprovada",
+        "rejected": "Rejeitada"
+    } %}
+
+    <h1>Solicitação #{{ access_request["id"] }}</h1>
+
+    <p>
+        <a href="/requests">Voltar para solicitações</a>
+    </p>
+
+    <h2>Dados da solicitação</h2>
+
+    <p><strong>Solicitante:</strong> {{ access_request["requester"] }}</p>
+
+    <p>
+        <strong>Área:</strong>
+        {{ area_labels.get(access_request["scope"], access_request["scope"]) }}
+    </p>
+
+    <p>
+        <strong>Sistema:</strong>
+        {{ system_labels.get(access_request["system"], access_request["system"]) }}
+    </p>
+
+    <p><strong>Perfil:</strong> {{ access_request["role"] }}</p>
+
+    <p><strong>Funções necessárias:</strong> {{ access_request["functions"] }}</p>
+
+    <p><strong>Justificativa:</strong> {{ access_request["justification"] }}</p>
+
+    <p>
+        <strong>Usuário de referência:</strong>
+        {{ access_request["reference_user"] or "Não informado" }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        {{ status_labels.get(access_request["status"], access_request["status"]) }}
+    </p>
+
+    <h2>Aprovações necessárias</h2>
+
+    {% if approvals %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Aprovador</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for approval in approvals %}
+                    <tr>
+                        <td>
+                            {{ approval_type_labels.get(
+                                approval["approver_type"],
+                                approval["approver_type"]
+                            ) }}
+                        </td>
+
+                        <td>{{ approval["approver_name"] }}</td>
+
+                        <td>
+                            {{ approval_status_labels.get(
+                                approval["status"],
+                                approval["status"]
+                            ) }}
+                        </td>
+
+                        <td>
+                            {% if approval["status"] == "pending" %}
+                                <form
+                                    method="POST"
+                                    action="/approvals/{{ approval['id'] }}/approved"
+                                    style="display: inline;"
+                                >
+                                    <button type="submit">Aprovar</button>
+                                </form>
+
+                                <form
+                                    method="POST"
+                                    action="/approvals/{{ approval['id'] }}/rejected"
+                                    style="display: inline;"
+                                >
+                                    <button type="submit">Rejeitar</button>
+                                </form>
+                            {% else %}
+                                Decisão registrada
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma aprovação registrada para esta solicitação.</p>
+    {% endif %}
+
+</body>
+</html>
