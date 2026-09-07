@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-from database import create_access_request
+from database import create_access_request, list_access_requests
 
 app = Flask(__name__)
 
@@ -31,7 +31,7 @@ def home():
             missing_fields.append("Funções necessárias")
 
         if not scope or not scope.strip():
-            missing_fields.append("Escopo organizacional")
+            missing_fields.append("Área")
 
         if not justification or not justification.strip():
             missing_fields.append("Justificativa de negócio")
@@ -64,3 +64,13 @@ def home():
         )
 
     return render_template("index.html")
+
+
+@app.route("/requests")
+def requests_list():
+    access_requests = list_access_requests()
+
+    return render_template(
+        "requests.html",
+        access_requests=access_requests
+    )

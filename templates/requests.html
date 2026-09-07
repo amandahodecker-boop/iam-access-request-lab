@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitações de Acesso</title>
+</head>
+
+<body>
+
+    {% set area_labels = {
+        "operations": "Operações",
+        "finance": "Financeiro",
+        "hr": "Recursos Humanos",
+        "technology": "Tecnologia",
+        "information_security": "Segurança da Informação"
+    } %}
+
+    {% set system_labels = {
+        "novaerp": "NovaERP",
+        "peoplehub": "PeopleHub",
+        "serviceflow": "ServiceFlow"
+    } %}
+
+    {% set role_labels = {
+        "viewer": "Viewer",
+        "analyst": "Analyst",
+        "administrator": "Administrator"
+    } %}
+
+    {% set status_labels = {
+        "pending_approval": "Aguardando aprovação",
+        "approved": "Aprovada",
+        "rejected": "Rejeitada",
+        "provisioned": "Provisionada"
+    } %}
+
+    <h1>Solicitações de Acesso</h1>
+
+    <a href="/">Nova solicitação</a>
+
+    <hr>
+
+    {% if access_requests %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Solicitante</th>
+                    <th>Área</th>
+                    <th>Sistema</th>
+                    <th>Perfil</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for access_request in access_requests %}
+                    <tr>
+                        <td>{{ access_request["id"] }}</td>
+                        <td>{{ access_request["requester"] }}</td>
+                        <td>{{ area_labels.get(access_request["scope"], access_request["scope"]) }}</td>
+                        <td>{{ system_labels.get(access_request["system"], access_request["system"]) }}</td>
+                        <td>{{ role_labels.get(access_request["role"], access_request["role"]) }}</td>
+                        <td>{{ status_labels.get(access_request["status"], access_request["status"]) }}</td>
+                        <td>{{ access_request["created_at"] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma solicitação encontrada.</p>
+    {% endif %}
+
+</body>
+</html>

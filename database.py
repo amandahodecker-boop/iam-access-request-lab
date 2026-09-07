@@ -69,3 +69,26 @@ def create_access_request(
     connection.close()
 
     return request_id
+def list_access_requests():
+    connection = sqlite3.connect(DATABASE)
+
+    connection.row_factory = sqlite3.Row
+
+    requests = connection.execute(
+        """
+        SELECT
+            id,
+            requester,
+            system,
+            role,
+            scope,
+            status,
+            created_at
+        FROM access_requests
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    connection.close()
+
+    return requests
