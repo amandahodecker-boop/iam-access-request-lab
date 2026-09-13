@@ -139,8 +139,8 @@ def approval_decision(approval_id, decision):
             approval_id,
             decision
         )
-    except ValueError:
-        return "Decisão de aprovação inválida.", 400
+    except ValueError as error:
+        return str(error), 400
 
     if request_id is None:
         return "Aprovação não encontrada.", 404

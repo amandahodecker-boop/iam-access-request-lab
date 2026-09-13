@@ -47,23 +47,41 @@
 
     <h2>Dados da solicitação</h2>
 
-    <p><strong>Solicitante:</strong> {{ access_request["requester"] }}</p>
+    <p>
+        <strong>Solicitante:</strong>
+        {{ access_request["requester"] }}
+    </p>
 
     <p>
         <strong>Área:</strong>
-        {{ area_labels.get(access_request["scope"], access_request["scope"]) }}
+        {{ area_labels.get(
+            access_request["scope"],
+            access_request["scope"]
+        ) }}
     </p>
 
     <p>
         <strong>Sistema:</strong>
-        {{ system_labels.get(access_request["system"], access_request["system"]) }}
+        {{ system_labels.get(
+            access_request["system"],
+            access_request["system"]
+        ) }}
     </p>
 
-    <p><strong>Perfil:</strong> {{ access_request["role"] }}</p>
+    <p>
+        <strong>Perfil:</strong>
+        {{ access_request["role"] }}
+    </p>
 
-    <p><strong>Funções necessárias:</strong> {{ access_request["functions"] }}</p>
+    <p>
+        <strong>Funções necessárias:</strong>
+        {{ access_request["functions"] }}
+    </p>
 
-    <p><strong>Justificativa:</strong> {{ access_request["justification"] }}</p>
+    <p>
+        <strong>Justificativa:</strong>
+        {{ access_request["justification"] }}
+    </p>
 
     <p>
         <strong>Usuário de referência:</strong>
@@ -72,13 +90,18 @@
 
     <p>
         <strong>Status:</strong>
-        {{ status_labels.get(access_request["status"], access_request["status"]) }}
+        {{ status_labels.get(
+            access_request["status"],
+            access_request["status"]
+        ) }}
     </p>
 
     <h2>Aprovações necessárias</h2>
 
     {% if approvals %}
+
         <table border="1" cellpadding="8">
+
             <thead>
                 <tr>
                     <th>Tipo</th>
@@ -89,8 +112,11 @@
             </thead>
 
             <tbody>
+
                 {% for approval in approvals %}
+
                     <tr>
+
                         <td>
                             {{ approval_type_labels.get(
                                 approval["approver_type"],
@@ -98,7 +124,9 @@
                             ) }}
                         </td>
 
-                        <td>{{ approval["approver_name"] }}</td>
+                        <td>
+                            {{ approval["approver_name"] }}
+                        </td>
 
                         <td>
                             {{ approval_status_labels.get(
@@ -108,13 +136,18 @@
                         </td>
 
                         <td>
-                            {% if approval["status"] == "pending" %}
+
+                            {% if access_request["status"] == "pending_approval"
+                                and approval["status"] == "pending" %}
+
                                 <form
                                     method="POST"
                                     action="/approvals/{{ approval['id'] }}/approved"
                                     style="display: inline;"
                                 >
-                                    <button type="submit">Aprovar</button>
+                                    <button type="submit">
+                                        Aprovar
+                                    </button>
                                 </form>
 
                                 <form
@@ -122,18 +155,37 @@
                                     action="/approvals/{{ approval['id'] }}/rejected"
                                     style="display: inline;"
                                 >
-                                    <button type="submit">Rejeitar</button>
+                                    <button type="submit">
+                                        Rejeitar
+                                    </button>
                                 </form>
-                            {% else %}
+
+                            {% elif approval["status"] != "pending" %}
+
                                 Decisão registrada
+
+                            {% else %}
+
+                                Fluxo encerrado
+
                             {% endif %}
+
                         </td>
+
                     </tr>
+
                 {% endfor %}
+
             </tbody>
+
         </table>
+
     {% else %}
-        <p>Nenhuma aprovação registrada para esta solicitação.</p>
+
+        <p>
+            Nenhuma aprovação registrada para esta solicitação.
+        </p>
+
     {% endif %}
 
 </body>
