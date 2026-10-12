@@ -56,8 +56,11 @@
 
             <tbody>
                 {% for access_request in access_requests %}
-                    <tr>
-                        <td>{{ access_request["id"] }}</td>
+                    <td>
+                         <a href="/requests/{{ access_request['id'] }}">
+                            #{{ access_request["id"] }}
+                        </a>
+                    </td>
                         <td>{{ access_request["requester"] }}</td>
                         <td>{{ area_labels.get(access_request["scope"], access_request["scope"]) }}</td>
                         <td>{{ system_labels.get(access_request["system"], access_request["system"]) }}</td>

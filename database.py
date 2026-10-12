@@ -23,6 +23,20 @@ def init_db():
         """
     )
 
+    connection.execute(
+        """
+        CREATE TABLE IF NOT EXISTS approvals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            request_id INTEGER NOT NULL,
+            approver_type TEXT NOT NULL,
+            approver_name TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'pending',
+            decided_at TIMESTAMP,
+            FOREIGN KEY (request_id) REFERENCES access_requests(id)
+        )
+        """
+    )
+
     connection.commit()
     connection.close()
 
@@ -69,6 +83,8 @@ def create_access_request(
     connection.close()
 
     return request_id
+
+
 def list_access_requests():
     connection = sqlite3.connect(DATABASE)
 
@@ -92,3 +108,176 @@ def list_access_requests():
     connection.close()
 
     return requests
+
+
+def create_approval(
+    request_id,
+    approver_type,
+    approver_name
+):
+    connection = sqlite3.connect(DATABASE)
+
+    connection.execute(
+        """
+        INSERT INTO approvals (
+            request_id,
+            approver_type,
+            approver_name
+        )
+        VALUES (?, ?, ?)
+        """,
+        (
+            request_id,
+            approver_type,
+            approver_name
+        )
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def list_request_approvals(request_id):
+    connection = sqlite3.connect(DATABASE)
+
+    connection.row_factory = sqlite3.Row
+
+    approvals = connection.execute(
+        """
+        SELECT
+            id,
+            request_id,
+            approver_type,
+            approver_name,
+            status,
+            decided_at
+        FROM approvals
+        WHERE request_id = ?
+        ORDER BY id
+        """,
+        (request_id,)
+    ).fetchall()
+
+    connection.close()
+
+    return approvals
+
+
+def get_access_request(request_id):
+    connection = sqlite3.connect(DATABASE)
+
+    connection.row_factory = sqlite3.Row
+
+    access_request = connection.execute(
+        """
+        SELECT
+            id,
+            requester,
+            system,
+            role,
+            functions,
+            scope,
+            justification,
+            reference_user,
+            status,
+            created_at
+        FROM access_requests
+        WHERE id = ?
+        """,
+        (request_id,)
+    ).fetchone()
+
+    connection.close()
+
+    return access_request
+
+
+def decide_approval(approval_id, decision):
+    allowed_decisions = (
+        "approved",
+        "rejected"
+    )
+
+    if decision not in allowed_decisions:
+        raise ValueError(
+            "Decisão de aprovação inválida."
+        )
+
+    connection = sqlite3.connect(DATABASE)
+    connection.row_factory = sqlite3.Row
+
+    approval = connection.execute(
+        """
+        SELECT
+            approvals.request_id,
+            approvals.status AS approval_status,
+            access_requests.status AS request_status
+        FROM approvals
+        JOIN access_requests
+            ON access_requests.id = approvals.request_id
+        WHERE approvals.id = ?
+        """,
+        (approval_id,)
+    ).fetchone()
+
+    if approval is None:
+        connection.close()
+        return None
+
+    if approval["approval_status"] != "pending":
+        connection.close()
+
+        raise ValueError(
+            "Esta aprovação já foi decidida."
+        )
+
+    if approval["request_status"] != "pending_approval":
+        connection.close()
+
+        raise ValueError(
+            "Esta solicitação já foi encerrada."
+        )
+
+    connection.execute(
+        """
+        UPDATE approvals
+        SET
+            status = ?,
+            decided_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+        """,
+        (
+            decision,
+            approval_id
+        )
+    )
+
+    connection.commit()
+
+    request_id = approval["request_id"]
+
+    connection.close()
+
+    return request_id
+
+
+def update_access_request_status(
+    request_id,
+    status
+):
+    connection = sqlite3.connect(DATABASE)
+
+    connection.execute(
+        """
+        UPDATE access_requests
+        SET status = ?
+        WHERE id = ?
+        """,
+        (
+            status,
+            request_id
+        )
+    )
+
+    connection.commit()
+    connection.close()
